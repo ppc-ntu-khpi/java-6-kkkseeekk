@@ -1,4 +1,3 @@
-[![Open in Codespaces](https://classroom.github.com/assets/launch-codespace-2972f46106e565e64193e422d61a12cf1da4916b45550586e14ef0a7c637dd04.svg)](https://classroom.github.com/open-in-codespaces?assignment_repo_id=24051301)
 # Практична робота "Поглиблене використання масивів"
 
 Цей репозиторій містить iнструкції та стартовий код для виконання практичної роботи з теми.
@@ -18,23 +17,81 @@
 
 ----
 
-## Список завдань
-1. Заповніть квадратну матрицю заданого порядку N простими числами з вказаного діапазону і виведіть її 
-2. Заповнити квадратну матрицю заданого порядку N числами в порядку зростання, починаючи з заданого числа x, наприклад (для N=3, x=14), <pre>
-[14,15,16]
-[17,18,19]
-[20,21,22]</pre>
-3. Знайти в матриці розміром N x M число, яке повторюється найбільшу кількість разів
-4. Знайти друге за величиною число у матриці розміром N x M 
-5. Обчислити суму елементів матриці розміром N x M 
-6. Знайти [добуток](https://uk.wikipedia.org/wiki/%D0%9C%D0%BD%D0%BE%D0%B6%D0%B5%D0%BD%D0%BD%D1%8F_%D0%BC%D0%B0%D1%82%D1%80%D0%B8%D1%86%D1%8C) двох матриць розмірами N x M та  M x Q
-7. Знайти суму двох матриць розміром N x M 
+## Список завдань (Обирала за номером в журналі)
 8.  Відсортувати квадратну матрицю заданого порядку N у порядку зростання елементів (зліва-направо, зверху-вниз)
-9. [Транспонувати](https://uk.wikipedia.org/wiki/%D0%A2%D1%80%D0%B0%D0%BD%D1%81%D0%BF%D0%BE%D0%BD%D0%BE%D0%B2%D0%B0%D0%BD%D0%B0_%D0%BC%D0%B0%D1%82%D1%80%D0%B8%D1%86%D1%8F) (замінити рядки стовпцями) матрицю розміром N x M 
-10. Заповніть матрицю розміром N x M числами, кожне з яких дорівнює сумі двох попередніх елементів (елементи a<sub>11</sub> a<sub>12</sub>  дорівнюють 1, а інші обчислюються за правилом: a<sub>ij</sub> = a<sub>ij-1</sub> + a<sub>ij-2</sub>)
-11. Знайти максимальні елементи рядків матриці розміром N x M
-12. Знайти рядок матриці розміром N x M з максимальною сумою елементів
-13. Знайти стовпець матриці розміром N x M з максимальною сумою елементів
-14. У матриці розміром N x M поміняти місцями два вказвні рядки
-15. У матриці розміром N x M поміняти місцями два вказвні стовпці
-16. З заданої матриці розміром N x M утворити нову матрицю останній стовпець якої містить суми елементів рядків вихідної матриці
+
+## 1. Код класу Exercise.java (у папці src)
+
+```java
+import java.util.Arrays;
+
+/**
+ * @author Kozlova
+ */
+public class Exercise {
+
+    /**
+     * @param matrix 
+     * @return 
+     */
+    public static int[][] Calculate(int[][] matrix) {
+        if (matrix == null || matrix.length == 0) {
+            return new int[0][0];
+        }
+
+        int n = matrix.length;
+
+        int[] flatArray = Arrays.stream(matrix)
+                                .flatMapToInt(Arrays::stream)
+                                .toArray();
+
+        Arrays.sort(flatArray);
+
+        int[][] sortedMatrix = new int[n][n];
+        Arrays.setAll(sortedMatrix, i -> 
+            Arrays.copyOfRange(flatArray, i * n, (i + 1) * n)
+        );
+
+        return sortedMatrix;
+    }
+}
+```
+
+## 2. Код класу Main.java (у папці src)
+
+```java
+import java.util.Arrays;
+
+/**
+ * @author Kozlova
+ */
+public class Main {
+
+    public static void main(String[] args) {
+        System.out.println("Advanced Arrays Practice");
+        System.out.println("Sorting matrix (left-to-right, top-to-bottom)\n");
+
+        int[][] sourceMatrix = {
+            {31, 7, 20},
+            {0, 88, 43},
+            {67, 12, 5}
+        };
+
+        System.out.println("Source Matrix:");
+        printMatrix(sourceMatrix);
+
+        int[][] resultMatrix = Exercise.Calculate(sourceMatrix);
+
+        System.out.println("\nSorted Matrix:");
+        printMatrix(resultMatrix);
+    }
+
+    private static void printMatrix(int[][] matrix) {
+        Arrays.stream(matrix)
+              .forEach(row -> System.out.println(Arrays.toString(row)));
+    }
+}
+```
+
+## 3. Результат виконання програми
+![result](https://github.com/ppc-ntu-khpi/java-6-kkkseeekk/blob/master/result.png)
